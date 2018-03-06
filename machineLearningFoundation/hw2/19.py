@@ -9,13 +9,13 @@ import numpy as np
 import random 
 import sys
 
-#d_train = sys.argv[1]
-#d_test = sys.argv[2] 
-#data_train = np.loadtxt(d_train)
-#data_test = np.loadtxt(d_test)
+d_train = sys.argv[1]
+d_test = sys.argv[2] 
+data_train = np.loadtxt(d_train)
+data_test = np.loadtxt(d_test)
 
-data_train = np.loadtxt("C:\\Users\\ipingou\\OneDrive\\文件\\碩二上\\ml\\hw2\\hw2_train.dat")
-data_test = np.loadtxt("C:\\Users\\ipingou\\OneDrive\\文件\\碩二上\\ml\\hw2\\hw2_test.dat")
+#data_train = np.loadtxt("C:\\Users\\ipingou\\OneDrive\\文件\\碩二上\\ml\\hw2\\hw2_train.dat")
+#data_test = np.loadtxt("C:\\Users\\ipingou\\OneDrive\\文件\\碩二上\\ml\\hw2\\hw2_test.dat")
 X= data_train[:,0:data_train.shape[1]-1]
 Y = data_train[:,-1]
 X_test= data_test[:,0:data_test.shape[1]-1]
@@ -74,7 +74,7 @@ theta_ein = [pos_neg_di(X[:,i],Y,i) for i in range(X.shape[1])]
 
 theta_ein2 = np.array(theta_ein)
 
-print(theta_ein2)
+#print(theta_ein2)
 
 Ein = min(theta_ein2[:,1])
 Ein_list = theta_ein2[:,1]==Ein

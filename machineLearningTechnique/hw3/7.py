@@ -7,9 +7,15 @@ Created on Sun May  7 13:41:24 2017
 
 import numpy as np
 import matplotlib.pyplot
+import sys
 
-train_ = np.loadtxt("C:\\Users\\ipingou\\OneDrive\\文件\\碩二下2\\ml\\hw3\\hw3_train.dat")
-test = np.loadtxt("C:\\Users\\ipingou\\OneDrive\\文件\\碩二下2\\ml\\hw3\\hw3_test.dat")
+input_train=sys.argv[1]
+train_ =  np.loadtxt(input_train)
+input_test = sys.argv[2]
+test =  np.loadtxt(input_test)
+
+#train_ = np.loadtxt("C:\\Users\\ipingou\\OneDrive\\文件\\碩二下2\\ml\\hw3\\hw3_train.dat")
+#test = np.loadtxt("C:\\Users\\ipingou\\OneDrive\\文件\\碩二下2\\ml\\hw3\\hw3_test.dat")
 
 
 U=(np.ones(train_.shape[0])*(1/train_.shape[0])).reshape([train_.shape[0],1])
@@ -75,7 +81,7 @@ def decision_stump():
 def G_predict(t,X):
     prediction = np.zeros(X.shape[0])
     #print(prediction.shape)
-    for i in range(t+1):
+    for i in range(t):
         Sign, Dimension,Theta_value = g[i]
         gt_prediction = Sign*(np.sign(X[:,Dimension]-Theta_value))
         gt_prediction = np.array([ 1 if i == 0 else i for i in gt_prediction])
@@ -126,7 +132,7 @@ matplotlib.pyplot.scatter(x,y,s=1)
 matplotlib.pyplot.show()
 
 print("Ein(g1): ",Ein_gt[0]," alpha1: ",alpha[0])
-
+"""
 #8
 #9
 Ein_Gt=[]
@@ -179,3 +185,4 @@ matplotlib.pyplot.scatter(x,y,s=1)
 matplotlib.pyplot.show()
 
 print("Eout(G): ",Eout_Gt[299])
+"""

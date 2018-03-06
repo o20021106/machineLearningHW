@@ -4,25 +4,30 @@ Created on Sun Jan  1 11:18:59 2017
 
 @author: ipingou
 """
+
+import sys
 import numpy as np
 import math
-k="C:/Users/ipingou/OneDrive/文件/碩二上/ml/hw3/hw3_train.dat"
-l="C:/Users/ipingou/OneDrive/文件/碩二上/ml/hw3/hw3_test.dat"
-data = np.loadtxt(k)
-features = data.shape[1]
-size = data.shape[0]
-X = data[:,0:features-1]
-X = np.insert(X,0,1,axis=1)
-Y = data[:,-1]
-Y=Y.reshape(len(Y),1)
+input_train=sys.argv[1]
+input_test=sys.argv[2]
 
-data_test = np.loadtxt(l)
-features_test = data_test.shape[1]
-size_test = data_test.shape[0]
-X_test = data_test[:,0:features_test-1]
-X_test = np.insert(X_test,0,1,axis=1)
-Y_test = data_test[:,-1]
-Y_test=Y_test.reshape(len(Y_test),1)
+def preprocess(file):
+    data = np.loadtxt(file)
+    features = data.shape[1]
+    X = data[:,0:features-1]
+    X = np.insert(X,0,1,axis=1)
+    Y = data[:,-1]
+    Y=Y.reshape(len(Y),1)
+    return [X,Y]
+
+
+def error(w,X,Y):
+    predict = np.sign(sigmoid(np.dot(X,w))-0.5)  
+    #print(predict)
+    return (1/X.shape[0])*sum(predict!=Y) 
+    
+[X,Y]=preprocess(input_train)
+[X_test, Y_test] = preprocess(input_test)
 
 def sigmoid_element(x):
    return 1/(1+math.exp(-1*x)) 
@@ -43,10 +48,6 @@ for i in range(2000):
 print (w)
 
 
-def error(w,X,Y):
-    predict = np.sign(sigmoid(np.dot(X,w))-0.5)  
-    print(predict)
-    return (1/X.shape[0])*sum(predict!=Y)
 
 
 print("Ein: " ,error(w,X_test,Y_test))

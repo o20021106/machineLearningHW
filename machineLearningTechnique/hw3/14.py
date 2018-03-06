@@ -7,13 +7,16 @@ Created on Sun May  7 19:13:51 2017
 
 import numpy as np
 
-train = np.loadtxt("C:\\Users\\ipingou\\OneDrive\\文件\\碩二下2\\ml\\hw3\\hw3_train.dat")
-test = np.loadtxt("C:\\Users\\ipingou\\OneDrive\\文件\\碩二下2\\ml\\hw3\\hw3_test.dat")
- 
+import sys
+
+input_train=sys.argv[1]
+train =  np.loadtxt(input_train)
+input_test = sys.argv[2]
+test =  np.loadtxt(input_test)
 
    
 def decision_stump(Data):
-    print("data size", Data.shape[0])
+    #print("data size", Data.shape[0])
     Impurity = 100000000
     Sign = 0
     Theta = 0
@@ -38,46 +41,13 @@ def decision_stump(Data):
                 gini1 = 2*(sum(group1[:,2]==1)/n1)*(1-(sum(group1[:,2]==1)/n1))
                 gini2 = 2*(sum(group2[:,2]==1)/n2)*(1-(sum(group2[:,2]==1)/n2))
                 impurity = n1*gini1+n2*gini2
-               # print(impurity)
-                
-            
-            
-                """
-                predict = np.array([ 1 if i == 0 else i for i in predict])
-                error = np.where(predict == train[:,2],0,1)
-                error_sum= np.dot(error,train[:,3])/train.shape[0]
-                two_error = np.array([error_sum,1-error_sum])
-                sign_min = np.argmin(two_error)
-                """
                 if impurity < Impurity: 
                     Sign = s
                     Dimension = i
                     Theta = theta
                     Impurity = impurity
                     Theta_value = theta_value
-
-
-            """
-                          
-            predict1=np.ones(theta)
-            predict2=-1*np.ones(train.shape[0]-theta)
-            predict = np.concatenate((predict1,predict2))
-            error = np.where(predict ==temp[:,2],0,1)
-            error_sum= np.dot(error,temp[:,3])/sum(temp[:,3])
-            two_error = np.array([error_sum,1-error_sum])
-            sign_min = np.argmin(two_error)
-            if two_error[sign_min] < et: 
-                Sign = np.where( sign_min == 0 ,1,-1)
-                Dimension = i
-                Theta = theta
-                et = two_error[sign_min]
-                if theta ==0:
-                    Theta_value = -100000
-                else:
-                    Theta_value = (temp[theta]+temp[theta-1])/2
-                    
-            """
-                    
+           
 
     return (Sign, Dimension,Theta,Theta_value,Impurity)
 
@@ -174,22 +144,6 @@ class Tree():
         self.nodeId = None
 
 
-"""
-cc = Tree()
-cc.left_child = 1
-cc.right_child = 2
-
-bb = Tree()
-bb.left_child = cc
-bb.right_child = 3
-aa = Tree()
-aa.left_child = bb
-aa.right_child = 4
-root = Tree()
-root.left_child =aa
-root.right_child = 5
-"""
-
 #count is used to give nodes unique ID
 count = 0
 
@@ -204,11 +158,10 @@ def buildTree(List):
     global count_test
     global tree_list
     if List == 1 or List == -1:
-        print(List)
         node = Tree()
         node.nodeId = count
         count_test.append(count)
-        #count = count+1
+        count = count+1
         node.branching = List
         tree_list.append(node)
 
@@ -227,6 +180,7 @@ def buildTree(List):
 #a is the tree constructed from the tree trained using trainning data in list form
 a = buildTree(tree)
 
+"""
 #printing all subtrees/nodes of a
 for i in tree_list:
     left_child_id = "leaf"
@@ -239,15 +193,14 @@ for i in tree_list:
     
     print("ID:",i.nodeId," leftchild: ",left_child_id," right_child: ",right_child_id)    
     print("branching: ", i.branching)
-    
+"""    
         
 #leafId stoers all leaf nodes
 leafId = []
 #if the node has no child, then it's a leaf, store the node's id into leaf, else trace through childs that's not none
 def find_leafId(Tree):
-    print(Tree.left_child == None and Tree.right_child == None)
+    #print(Tree.left_child == None and Tree.right_child == None)
     if Tree.left_child == None and Tree.right_child == None:
-        print("here")
         leafId.append(Tree.nodeId)
     elif Tree.left_child == None:
         find_leafId(Tree.right_child)
@@ -317,12 +270,12 @@ def print_tree(Tree):
         print("ID:",Tree.nodeId," leftchild: ",left_child_id," right_child: ",right_child_id," branching: ",Tree.branching)    
         print_tree(Tree.left_child)
         print_tree(Tree.right_child)
-      
+"""      
 #print all the pruned trees
 for i in prune_tree:
     print_tree(i)
     print(" ")
-
+"""
 #given an observation and a tree, return the node that observation end up with according to branching criteria
 #then return the nodeId, and the data 
 def prediction_16(Data,Tree):
@@ -363,7 +316,8 @@ def update_value(Tree,X):
 def update_i(Tree,i,value):
     if Tree.left_child == None and Tree.right_child == None:
         if Tree.nodeId == i:
-            print("here ", Tree.nodeId,value)
+            Tree.branching = value
+            #print("here ", Tree.nodeId,value)
     elif Tree.left_child == None:
         update_i(Tree.right_child,i,value)
     elif Tree.right_child == None:
@@ -416,16 +370,16 @@ def error_rate_tree(X,Tree):
 #loop trough all the prune tree and calculated all of the Ein
 Ein_16 = []
 for prune_Tree in prune_tree:
-    print(prune_Tree.nodeId)
+    #print(prune_Tree.nodeId)
     Ein_16.append(error_rate_tree(train,prune_Tree))
     
 #loop trough all the prune tree and calculated all of the Eout
 Eout_16 = []
 for prune_Tree in prune_tree:
-    print(prune_Tree.nodeId)
+    #print(prune_Tree.nodeId)
     Eout_16.append(error_rate_tree(test,prune_Tree))
     
-print("min Ein: ", np.min(Ein_16), " min Eout: ",np.min(Eout_16))
+#print("min Ein: ", np.min(Ein_16), " min Eout: ",np.min(Eout_16))
     
 
 

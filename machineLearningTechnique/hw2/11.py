@@ -6,9 +6,7 @@ Created on Sat Apr 29 22:48:57 2017
 """
 
 import numpy as np
-
-#import sys
-#input_train=sys.argv[1]
+import sys
 
 def prediction(g,beta,X):
     predict = np.zeros(X.shape[0])
@@ -44,8 +42,9 @@ def kernel(X, g):
     
 
 
-
-data = np.loadtxt("C:\\Users\\ipingou\\OneDrive\\文件\\碩二下2\\ml\\hw2\\hw2_lssvm_all.dat")
+input_train=sys.argv[1]
+data =  np.loadtxt(input_train)
+#data = np.loadtxt("C:\\Users\\ipingou\\OneDrive\\文件\\碩二下2\\ml\\hw2\\hw2_lssvm_all.dat")
 train = data[0:400]
 test = data[400:500]
 train_x = train[:,0:10].copy()
@@ -74,8 +73,8 @@ for g in Gamma:
         
 for r in result:
     print("Gamma: ",r[0]," Lambda: ",r[1]," Ein: ",r[3])
-    
-for r in result:
-    print("Gamma: ",r[0]," Lambda: ",r[1]," Eout: ",r[4])
+   
+#for r in result:
+ #   print("Gamma: ",r[0]," Lambda: ",r[1]," Eout: ",r[4])
         
 

@@ -11,13 +11,12 @@ Created on Tue Jan 10 09:42:48 2017
 
 @author: ipingou
 """
-
+import sys
 import numpy as np
-import math
 import matplotlib.pyplot as plt
+input_train=sys.argv[1]
+input_test=sys.argv[2]
 
-k="C:/Users/ipingou/OneDrive/文件/碩二上/ml/hw3/hw4_train.dat"
-l="C:/Users/ipingou/OneDrive/文件/碩二上/ml/hw3/hw4_test.dat"
 def preprocess(file):
     data = np.loadtxt(file)
     features = data.shape[1]
@@ -31,8 +30,8 @@ def error(w,X,Y):
     predict = np.sign(np.dot(X,w))
     return (1/X.shape[0])*sum(predict!=Y)    
     
-[X,Y]=preprocess(k)
-[X_test, Y_test] = preprocess(l)
+[X,Y]=preprocess(input_train)
+[X_test, Y_test] = preprocess(input_test)
 [X_train,X_val] = np.split(X, np.array([120]))
 [Y_train, Y_val] = np.split(Y, np.array([120]))
 
